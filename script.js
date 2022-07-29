@@ -4,6 +4,7 @@ const settingsEl = document.querySelector('.settings');
 const generateBtn = document.getElementById('generate');
 const messageEl = document.getElementById('message');
 const errorEl = document.getElementById('error');
+const lengthEl = document.getElementById('lengthMsg');
 
 // settings checkboxes
 const pwLength = document.getElementById('length');
@@ -17,6 +18,13 @@ let isDirty = false;
 function init() {
     clipboardBtn.addEventListener('click', copyToClipboard);
     generateBtn.addEventListener('click', generatePassword);
+
+    pwLength.addEventListener('change', function() {
+        if (pwLength.value > 20) {
+            hideMessage('length')
+            pwLength.value = 8;
+        }
+    })
     
     function copyToClipboard() {
         const password = resultEl.innerHTML;
@@ -48,6 +56,7 @@ function init() {
         }
         isDirty = true;
         resultEl.innerHTML = password;
+        console.log(password)
     };
     
     function shakeResult(){
@@ -83,7 +92,17 @@ function init() {
             resultEl.style.animation= 'none'
             clipboardBtn.disabled = false;
             }, 1000);
-        }
+        } else if (el === 'length') {
+            lengthEl.style.display = 'block';
+            clipboardBtn.disabled = true;
+          
+            setTimeout(function() { 
+            lengthEl.style.display = 'none';
+            resultEl.style.animation= 'none'
+            clipboardBtn.disabled = false;
+            }, 1000);
+        } 
+        
       };
 
 };
